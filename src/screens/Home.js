@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {action} from '@storybook/addon-actions';
+
 import {
   LANGUAGE_NAMES,
   getPhrasesForCategoryId,
@@ -16,13 +17,13 @@ import {
 import List from '../components/List/List';
 import SectionHeading from '../components/SectionHeading/SectionHeading';
 import ToolBar from '../components/ToolBar/ToolBar';
-
 import ToolButton from '../components/ToolButton/ToolButton';
 import LanguageSwitcher from '../components/LanguageSwitcher/LanguageSwitcher';
 import AddIcon from '../components/ToolButton/assets/add.svg';
 import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
+import {LEARNT_PRHASES_ID} from '../redux/constants/index';
 
 export default ({
   //nav provider
@@ -34,9 +35,12 @@ export default ({
   setCategories,
   setCurrentCategory,
   setPhrases,
+  learntPhrases,
+  synchronizeStorageToRedux,
 }) => {
   useEffect(() => {
     // fetch categories
+    synchronizeStorageToRedux();
     const categories = getAllCategories();
     setCategories(categories);
   }, []);
@@ -46,6 +50,13 @@ export default ({
     // fetch Phrases for category
     const phrasesForCategory = getPhrasesForCategoryId(item.id);
     setPhrases(phrasesForCategory);
+    navigation.navigate('Learn');
+  };
+
+  const openCategoryLearntPhrases = item => {
+    setCurrentCategory(item.id);
+    // fetch Phrases for categor
+    setPhrases(learntPhrases);
     navigation.navigate('Learn');
   };
 
@@ -124,12 +135,19 @@ export default ({
             <SectionHeading text="Learnt phrases:" />
           </View>
           <List
-            data={[{id: 2, name: '10 words and phrases'}]}
+            data={[
+              {
+                id: LEARNT_PRHASES_ID,
+                name: `${
+                  learntPhrases.length ? learntPhrases.length : 'No'
+                } words and phrases`,
+              },
+            ]}
             text={'Learn'}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
-            makeAction={() => {}}
+            makeAction={openCategoryLearntPhrases}
           />
         </View>
       </KeyboardAvoidingView>
