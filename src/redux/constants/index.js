@@ -5,3 +5,4 @@ export const SET_LANGUAGE_NAME = 'SET_LANGUAGE_NAME';
 export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';
 export const SET_LEARNT_PHRASES = 'SET_LEARNT_PHRASES';
 export const LEARNT_PRHASES_ID = '###learnt-phrases###';
+export const USER_PHRASES = 'USER_PHRASES';

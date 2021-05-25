@@ -54,7 +54,7 @@ export default ({
     item => {
       if (
         item.id === currentPhrase.id &&
-        learntPhrases.every(phrase => phrase.id !== currentPhrase.id)
+        learntPhrases?.every(phrase => phrase.id !== currentPhrase.id)
       ) {
         addLearntPhrase(item);
       } else {
