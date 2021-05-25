@@ -53,9 +53,9 @@ export default ({
     navigation.navigate('Learn');
   };
 
-  const openCategoryLearntPhrases = item => {
-    setCurrentCategory(item.id);
-    // fetch Phrases for categor
+  const openCategoryLearntPhrases = () => {
+    setCurrentCategory(LEARNT_PRHASES_ID);
+    // fetch Phrases for category
     setPhrases(learntPhrases);
     navigation.navigate('Learn');
   };
@@ -95,7 +95,7 @@ export default ({
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={openCategoryLearntPhrases}>
                   <CheckAllIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
