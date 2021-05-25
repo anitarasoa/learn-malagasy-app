@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {action} from '@storybook/addon-actions';
+
 import {
   Text,
   View,
@@ -16,16 +17,19 @@ import ToolButton from '../components/ToolButton/ToolButton';
 import LanguageSwitcher from '../components/LanguageSwitcher/LanguageSwitcher';
 import BackIcon from '../components/ToolButton/assets/back.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
-
 import {LANGUAGE_NAMES} from '../data/dataUtils';
 import {shuffleArray} from '../utils';
+import {LEARNT_PRHASES_ID} from '../redux/constants/index';
 
 export default ({
   //nav provider
   navigation,
-
   categoryPhrases,
   currentCategoryName,
+  addLearntPhrase,
+  learntPhrases,
+  categories,
+  currentCategoryIdRoot,
 }) => {
   const [originalPhrases, setOriginalPhrases] = useState([]);
   const [phrasesLeft, setPhrasesLeft] = useState([]);
@@ -48,14 +52,15 @@ export default ({
 
   const selectAnswerCallback = useCallback(
     item => {
-      if (item.id === currentPhrase.id) {
-        // TODO add to learned
+      if (
+        item.id === currentPhrase.id &&
+        learntPhrases.every(phrase => phrase.id !== currentPhrase.id)
+      ) {
+        addLearntPhrase(item);
       } else {
-        // TODO add to seen
       }
 
       setDisableAllOptions(true);
-
       const answerOptionsWithSelected = answerOptions.map(phrase => {
         return {...phrase, isSelected: phrase.id === item.id};
       });
@@ -64,6 +69,7 @@ export default ({
     },
     [currentPhrase, setDisableAllOptions, answerOptions],
   );
+
   const nextAnswerCallback = useCallback(() => {
     if (!Boolean(phrasesLeft.length)) {
       setshouldReshuffle(true);
@@ -90,9 +96,14 @@ export default ({
     const newPhrase = phrasesLeftCopy.shift();
     setPhrasesLeft(phrasesLeftCopy);
     setCurrentPhrase(newPhrase);
-
     setAnswerOptionsCallback(originalAll, newPhrase);
   };
+
+  const learntCategory = categories.find(cat =>
+    cat.phrasesIds.includes(currentPhrase?.id),
+  );
+
+  const learntCatName = learntCategory?.name.en;
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -133,7 +144,13 @@ export default ({
           </View>
           <View style={styles.heading}>
             <SectionHeading text="Category: " />
-            <Text>{currentCategoryName}</Text>
+            <Text>
+              {`${
+                currentCategoryIdRoot === LEARNT_PRHASES_ID
+                  ? `Learnt Phrases - ${learntCatName}`
+                  : currentCategoryName
+              } `}
+            </Text>
           </View>
           <View style={styles.heading}>
             <SectionHeading text="The phrase: " />

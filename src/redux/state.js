@@ -4,5 +4,6 @@ export default {
   categories: [],
   currentCategoryId: '',
   categoryPhrases: [],
+  learntPhrases: [],
   nativeLanguage: LANGUAGE_NAMES.EN,
 };
