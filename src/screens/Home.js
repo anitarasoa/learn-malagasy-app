@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {action} from '@storybook/addon-actions';
 
 import {
@@ -23,26 +23,25 @@ import AddIcon from '../components/ToolButton/assets/add.svg';
 import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
-import {LEARNT_PRHASES_ID} from '../redux/constants/index';
+import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
 
 export default ({
-  //nav provider
   navigation,
-  //state props
   categories,
   nativeLanguage,
   //actions
   setCurrentCategory,
+  seenPhrases,
   setPhrases,
   learntPhrases,
   getAllCategories,
   userPhrases,
+  setCategories,
   synchronizeStorageToRedux,
+  // getAllCategoriesAction,
 }) => {
   useEffect(() => {
-    // handle the storing new phrases
     synchronizeStorageToRedux();
-    // fetch categories
     getAllCategories();
   }, []);
 
@@ -67,6 +66,12 @@ export default ({
     // fetch Phrases for categor
     setPhrases(learntPhrases);
     learntPhrases.length !== 0 && navigation.navigate('Learn');
+  };
+
+  const openSeenPhrases = async item => {
+    setCurrentCategory(item.id);
+    setPhrases(seenPhrases);
+    seenPhrases.length !== 0 && navigation.navigate('Learn');
   };
 
   return (
@@ -136,12 +141,19 @@ export default ({
             <SectionHeading text="Seen phrases:" />
           </View>
           <List
-            data={[{id: 1, name: '35 words and phrases'}]}
+            data={[
+              {
+                id: `${SEEN_PHRASES_ID}`,
+                name: `${
+                  seenPhrases.length === 0 ? 'No' : `${seenPhrases.length}`
+                } words and phrases`,
+              },
+            ]}
             text={'Learn'}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
-            makeAction={() => {}}
+            makeAction={openSeenPhrases}
           />
           <View style={styles.heading}>
             <SectionHeading text="Learnt phrases:" />

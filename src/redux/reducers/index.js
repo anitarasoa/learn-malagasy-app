@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import {combineReducers} from 'redux';
-// import all of constat case name for the switch
+
+// import all of constat case name for the swich
 // in reducers
 import {
   SET_CATEGORIES,
@@ -8,6 +10,9 @@ import {
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
   USER_PHRASES,
+  SET_SEEN_PHRASES,
+  SET_PHRASES_LEFT,
+  SET_SEEN_PHRASES_CATEGORY,
 } from '../constants';
 
 // categories reducer
@@ -67,6 +72,33 @@ function userPhrases(state = [], action) {
   }
 }
 
+function seenPhrases(state = [], action) {
+  switch (action.type) {
+    case SET_SEEN_PHRASES:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function leftPhrases(state = null, action) {
+  switch (action.type) {
+    case SET_PHRASES_LEFT:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function seenPhrasesCategory(state = null, action) {
+  switch (action.type) {
+    case SET_SEEN_PHRASES_CATEGORY:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 // combine all of the reducers together
 export default combineReducers({
   currentCategoryId,
@@ -75,4 +107,7 @@ export default combineReducers({
   nativeLanguage,
   learntPhrases,
   userPhrases,
+  seenPhrases,
+  seenPhrasesCategory,
+  leftPhrases,
 });

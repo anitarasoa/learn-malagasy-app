@@ -7,7 +7,9 @@ import {
   setLearntPhrases,
   synchronizeStorageToRedux,
   getAllCategories,
+  setSeenPhrases,
 } from '../redux/actions';
+
 import {
   categoriesRoot,
   nativeLanguageRoot,
@@ -15,6 +17,8 @@ import {
   categoryPhrasesRoot,
   currentCategoryIdRoot,
   userPhrasesRoot,
+  seenPhrases,
+  leftPhrases,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -25,6 +29,8 @@ function mapStateToProps(state) {
     categoryPhrases: categoryPhrasesRoot(state),
     currentCategoryId: currentCategoryIdRoot(state),
     userPhrases: userPhrasesRoot(state),
+    seenPhrases: seenPhrases(state),
+    leftPhrases: leftPhrases(state),
   };
 }
 const mapDispatchToProps = {
@@ -34,6 +40,8 @@ const mapDispatchToProps = {
   setLearntPhrases,
   getAllCategories,
   synchronizeStorageToRedux,
+  synchronizeStorageToRedux,
+  setSeenPhrases,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
