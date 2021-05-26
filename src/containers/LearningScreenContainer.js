@@ -37,9 +37,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   setSeenPhraseCategory,
   setCategories,
+  addLearntPhrase,
   addSeenPhrase,
   setSeenPhrases,
-  addLearntPhrase,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learning);

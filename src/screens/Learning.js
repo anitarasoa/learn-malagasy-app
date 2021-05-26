@@ -29,7 +29,6 @@ export default ({
   addLearntPhrase,
   learntPhrases,
   categories,
-  currentCategoryIdRoot,
   seenPhrases,
   addSeenPhrase,
   currentCategoryId,

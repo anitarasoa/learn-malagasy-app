@@ -78,7 +78,7 @@ export function setLearntPhrases(learntPhrases) {
 export function addLearntPhrase(phrase) {
   return async dispatch => {
     const storedLearntPhrases = await getData(LEARNT_PHRASES_KEY);
-    let dataToStore = storedLearntPhrases
+    let dataToStore = storedLearntPhrase
       ? [...storedLearntPhrases, phrase]
       : [phrase];
     await storeData(LEARNT_PHRASES_KEY, dataToStore);
@@ -87,32 +87,14 @@ export function addLearntPhrase(phrase) {
 }
 
 // Add seen phrases
-export function addSeenPhrase(phrases) {
+export function addSeenPhrase(phrase) {
   return async dispatch => {
     const storedSeenPhrases = await getData(SEEN_PHRASE_KEY);
     let dataToStore = storedSeenPhrases
-      ? [...storedSeenPhrases, phrase]
+      ? [...storedLearntPhrases, phrase]
       : [phrase];
-    await storeData(LEARNT_PHRASES_KEY, dataToStore);
-    dispatch(setLearntPhrases(dataToStore));
-  };
-}
-
-// Adding new term actions
-
-export function setUserPhrases(phrases) {
-  return {
-    type: USER_PHRASES,
-    payload: phrases,
-  };
-}
-
-export function addUserPhrase(phrase) {
-  return async dispatch => {
-    const storedPhrases = await getData(USER_PHRASES_KEY);
-    let dataToStore = storedPhrases ? [...storedPhrases, phrase] : [phrase];
-    await storeData(LEARNT_PHRASES_KEY, dataToStore);
-    dispatch(setLearntPhrases(dataToStore));
+    await storeData(SEEN_PHRASE_KEY, dataToStore);
+    dispatch(setSeenPhrases(dataToStore));
   };
 }
 

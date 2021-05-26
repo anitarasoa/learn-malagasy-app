@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {combineReducers} from 'redux';
 
-// import all of constat case name for the swich
+// import all of constat case name for the switch
 // in reducers
 import {
   SET_CATEGORIES,
