@@ -148,7 +148,7 @@ export default ({
 
             <View style={{marginTop: 45}}>
               <NextButton
-                isDisabled={englishTerm && malagasyTerm ? false : true}
+                isDisabled={!Boolean(englishTerm && malagasyTerm)}
                 textColor={englishTerm && malagasyTerm ? '#E5E5E5' : '#06B6D4'}
                 text={'Add'}
                 onPress={addNewTermHandler}

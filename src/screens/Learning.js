@@ -58,6 +58,7 @@ export default ({
       ) {
         addLearntPhrase(item);
       } else {
+        // TODO add to seen
       }
 
       setDisableAllOptions(true);
