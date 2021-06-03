@@ -1,12 +1,6 @@
 import React, {useEffect} from 'react';
 import {action} from '@storybook/addon-actions';
-
-import {
-  LANGUAGE_NAMES,
-  getPhrasesForCategoryId,
-  getAllCategories,
-} from '../data/dataUtils';
-
+import {LANGUAGE_NAMES, getPhrasesForCategoryId} from '../data/dataUtils';
 import {
   View,
   StyleSheet,
@@ -32,17 +26,16 @@ export default ({
   categories,
   nativeLanguage,
   //actions
-  setCategories,
   setCurrentCategory,
   setPhrases,
   learntPhrases,
   synchronizeStorageToRedux,
+  getAllCategoriesAction,
 }) => {
   useEffect(() => {
     // fetch categories
     synchronizeStorageToRedux();
-    const categories = getAllCategories();
-    setCategories(categories);
+    getAllCategoriesAction();
   }, []);
 
   const openCategoryPhrases = item => {

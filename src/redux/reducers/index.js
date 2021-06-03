@@ -8,6 +8,7 @@ import {
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
 } from '../constants';
+
 // categories reducer
 function categories(state = [], action) {
   switch (action.type) {
