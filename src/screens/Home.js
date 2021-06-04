@@ -30,12 +30,12 @@ export default ({
   setPhrases,
   learntPhrases,
   synchronizeStorageToRedux,
-  getAllCategoriesAction,
+  getAllCategories,
 }) => {
   useEffect(() => {
     // fetch categories
     synchronizeStorageToRedux();
-    getAllCategoriesAction();
+    getAllCategories();
   }, []);
 
   const openCategoryPhrases = item => {
