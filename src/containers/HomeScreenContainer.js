@@ -25,7 +25,6 @@ function mapStateToProps(state) {
     categoryPhrases: categoryPhrasesRoot(state),
     currentCategoryId: currentCategoryIdRoot(state),
     userPhrases: userPhrasesRoot(state),
-    learntPhrases: learntPhrases(state),
   };
 }
 const mapDispatchToProps = {
