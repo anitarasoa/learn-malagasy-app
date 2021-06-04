@@ -1,6 +1,12 @@
 import React, {useEffect} from 'react';
 import {action} from '@storybook/addon-actions';
-import {LANGUAGE_NAMES, getPhrasesForCategoryId} from '../data/dataUtils';
+
+import {
+  LANGUAGE_NAMES,
+  getPhrasesForCategoryId,
+  getAllCategories,
+} from '../data/dataUtils';
+
 import {
   View,
   StyleSheet,
@@ -29,12 +35,14 @@ export default ({
   setCurrentCategory,
   setPhrases,
   learntPhrases,
-  synchronizeStorageToRedux,
   getAllCategories,
+  userPhrases,
+  synchronizeStorageToRedux,
 }) => {
   useEffect(() => {
-    // fetch categories
+    // handle the storing new phrases
     synchronizeStorageToRedux();
+    // fetch categories
     getAllCategories();
   }, []);
 
@@ -42,15 +50,23 @@ export default ({
     setCurrentCategory(item.id);
     // fetch Phrases for category
     const phrasesForCategory = getPhrasesForCategoryId(item.id);
-    setPhrases(phrasesForCategory);
+    const filterUserPhrases = userPhrases.filter(
+      userPhrase => userPhrase.catId === item.id,
+    );
+
+    const combinationNewCatAndCurrentCat = [
+      ...phrasesForCategory,
+      ...filterUserPhrases,
+    ];
+    setPhrases(combinationNewCatAndCurrentCat);
     navigation.navigate('Learn');
   };
 
-  const openCategoryLearntPhrases = () => {
-    setCurrentCategory(LEARNT_PRHASES_ID);
-    // fetch Phrases for category
+  const openCategoryLearntPhrases = item => {
+    setCurrentCategory(item.id);
+    // fetch Phrases for categor
     setPhrases(learntPhrases);
-    navigation.navigate('Learn');
+    learntPhrases.length !== 0 && navigation.navigate('Learn');
   };
 
   return (
@@ -60,7 +76,10 @@ export default ({
           <View style={styles.header}>
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton
+                  onPress={() => {
+                    navigation.navigate('NewTerm');
+                  }}>
                   <AddIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
@@ -132,7 +151,7 @@ export default ({
               {
                 id: LEARNT_PRHASES_ID,
                 name: `${
-                  learntPhrases.length ? learntPhrases.length : 'No'
+                  learntPhrases?.length ? learntPhrases?.length : 'No'
                 } words and phrases`,
               },
             ]}

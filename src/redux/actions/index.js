@@ -1,14 +1,20 @@
 // import all of the constants from contants folder
+
+import {
+  USER_PHRASES_KEY,
+  LEARNT_PHRASES_KEY,
+  getStoreItem,
+  setStoreItem,
+} from '../../utils/storage';
 import {
   SET_CATEGORIES,
   SET_PHRASES,
   SET_LANGUAGE_NAME,
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
+  USER_PHRASES,
 } from '../constants';
 import {getAllCategories as getAllLocalCategories} from '../../data/dataUtils';
-
-import {storeData, LEARNT_PHRASES_KEY, getData} from '../../utils/localStorage';
 
 // categories actions
 export function setCategories(categories) {
@@ -55,26 +61,55 @@ export function setLearntPhrases(learntPhrases) {
 
 export function addLearntPhrase(phrase) {
   return async dispatch => {
-    const storedLearntPhrases = await getData(LEARNT_PHRASES_KEY);
+    const storedLearntPhrases = await getStoreItem(LEARNT_PHRASES_KEY);
     let dataToStore = null;
     if (!storedLearntPhrases) {
       dataToStore = [phrase];
     } else {
       dataToStore = [...storedLearntPhrases, phrase];
     }
-    await storeData(LEARNT_PHRASES_KEY, dataToStore);
+    await setStoreItem(LEARNT_PHRASES_KEY, dataToStore);
     dispatch(setLearntPhrases(dataToStore));
+    return Promise.resolve();
+  };
+}
+
+// Adding new term actions
+
+export function setUserPhrases(phrases) {
+  return {
+    type: USER_PHRASES,
+    payload: phrases,
+  };
+}
+
+export function addUserPhrase(phrase) {
+  return async dispatch => {
+    const storedPhrases = await getStoreItem(USER_PHRASES_KEY);
+    let dataToStore = null;
+    if (!storedPhrases) {
+      dataToStore = [phrase];
+    } else {
+      dataToStore = [...storedPhrases, phrase];
+    }
+
+    await setStoreItem(USER_PHRASES_KEY, dataToStore);
+    dispatch(setUserPhrases(dataToStore));
     return Promise.resolve();
   };
 }
 
 export const synchronizeStorageToRedux = () => {
   return async dispatch => {
-    const storedLearntPhrase = await getData(LEARNT_PHRASES_KEY);
-    if (!storedLearntPhrase) {
-      return Promise.resolve();
+    const storedPhrases = await getStoreItem(USER_PHRASES_KEY);
+    const storedLearntPhrase = await getStoreItem(LEARNT_PHRASES_KEY);
+    if (storedPhrases) {
+      dispatch(setUserPhrases(storedPhrases));
     }
-    dispatch(setLearntPhrases(storedLearntPhrase));
+
+    if (storedLearntPhrase) {
+      dispatch(setLearntPhrases(storedLearntPhrase));
+    }
     return Promise.resolve();
   };
 };

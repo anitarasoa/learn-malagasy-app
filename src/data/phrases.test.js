@@ -9,7 +9,7 @@ import {
 
 describe('getAllCategoriesNames', () => {
   it('get all names for category for given language ', () => {
-    const received = getAllCategoriesNames(LANGUAGE_NAMES.MG);
+    const received = getAllCategoriesNames();
     const expected = [
       'Fiarahabana',
       'Fanaovam-beloma',

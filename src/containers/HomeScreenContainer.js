@@ -12,6 +12,9 @@ import {
   categoriesRoot,
   nativeLanguageRoot,
   learntPhrases,
+  categoryPhrasesRoot,
+  currentCategoryIdRoot,
+  userPhrasesRoot,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -19,6 +22,9 @@ function mapStateToProps(state) {
     categories: categoriesRoot(state),
     nativeLanguage: nativeLanguageRoot(state),
     learntPhrases: learntPhrases(state),
+    categoryPhrases: categoryPhrasesRoot(state),
+    currentCategoryId: currentCategoryIdRoot(state),
+    userPhrases: userPhrasesRoot(state),
   };
 }
 const mapDispatchToProps = {

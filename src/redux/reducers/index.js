@@ -7,6 +7,7 @@ import {
   SET_LANGUAGE_NAME,
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
+  USER_PHRASES,
 } from '../constants';
 
 // categories reducer
@@ -57,6 +58,15 @@ function learntPhrases(state = [], action) {
   }
 }
 
+function userPhrases(state = [], action) {
+  switch (action.type) {
+    case USER_PHRASES:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 // combine all of the reducers together
 export default combineReducers({
   currentCategoryId,
@@ -64,4 +74,5 @@ export default combineReducers({
   categoryPhrases,
   nativeLanguage,
   learntPhrases,
+  userPhrases,
 });

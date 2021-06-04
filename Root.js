@@ -17,8 +17,7 @@ const Root = () => {
     }
   }, [toggleStorybook]);
 
-  // return storybookActive ? <Storybook /> : <App />;
-  return setStorybookActive ? <App /> : <App />;
+  return storybookActive ? <App /> : <App />;
 };
 
 export default Root;

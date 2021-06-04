@@ -54,8 +54,9 @@ export default ({
     item => {
       if (
         item.id === currentPhrase.id &&
-        learntPhrases.every(phrase => phrase.id !== currentPhrase.id)
+        learntPhrases?.every(phrase => phrase.id !== currentPhrase.id)
       ) {
+        console.log('add item', item);
         addLearntPhrase(item);
       } else {
       }
