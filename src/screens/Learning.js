@@ -56,9 +56,9 @@ export default ({
         item.id === currentPhrase.id &&
         learntPhrases?.every(phrase => phrase.id !== currentPhrase.id)
       ) {
+        console.log('add item', item);
         addLearntPhrase(item);
       } else {
-        // TODO add to seen
       }
 
       setDisableAllOptions(true);
