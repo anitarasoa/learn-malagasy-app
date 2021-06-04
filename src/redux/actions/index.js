@@ -6,7 +6,7 @@ import {
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
 } from '../constants';
-import {getAllCategories} from '../../data/dataUtils';
+import {getAllCategories as getLocalAllCategories} from '../../data/dataUtils';
 
 import {storeData, LEARNT_PHRASES_KEY, getData} from '../../utils/localStorage';
 
@@ -18,9 +18,9 @@ export function setCategories(categories) {
   };
 }
 
-export function getAllCategoriesAction() {
+export function getAllCategories() {
   return async dispatch => {
-    const categories = await getAllCategories();
+    const categories = await getLocalAllCategories();
     dispatch(setCategories(categories));
   };
 }

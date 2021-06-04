@@ -6,7 +6,7 @@ import {
   setPhrases,
   setLearntPhrases,
   synchronizeStorageToRedux,
-  getAllCategoriesAction,
+  getAllCategories,
 } from '../redux/actions';
 import {
   categoriesRoot,
@@ -26,7 +26,7 @@ const mapDispatchToProps = {
   setCurrentCategory,
   setPhrases,
   setLearntPhrases,
-  getAllCategoriesAction,
+  getAllCategories,
   synchronizeStorageToRedux,
 };
 
