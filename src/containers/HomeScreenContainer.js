@@ -9,6 +9,7 @@ import {
   synchronizeStorageToRedux,
   getAllCategories,
   setSeenPhrases,
+  toggleLanguageName,
 } from '../redux/actions';
 
 import {
@@ -42,6 +43,7 @@ const mapDispatchToProps = {
   getAllCategories,
   synchronizeStorageToRedux,
   setSeenPhrases,
+  toggleLanguageName,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -9,10 +9,10 @@ import {
   SET_SEEN_PHRASES,
   SET_PHRASES_LEFT,
   SET_SEEN_PHRASES_CATEGORY,
+  TOOGLE_LANGUAGE_NAME,
 } from '../constants';
 
 import {getAllCategories as getAllLocalCategories} from '../../data/dataUtils';
-// import {getAllCategories} from '../../data/dataUtils';
 
 import {
   storeData,
@@ -152,5 +152,11 @@ export function setSeenPhraseCategory(category) {
   return {
     type: SET_SEEN_PHRASES_CATEGORY,
     payload: category,
+  };
+}
+
+export function toggleLanguageName() {
+  return {
+    type: TOOGLE_LANGUAGE_NAME,
   };
 }
