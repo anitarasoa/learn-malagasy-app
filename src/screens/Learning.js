@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {action} from '@storybook/addon-actions';
 
 import {
   Text,
@@ -17,6 +16,26 @@ import ToolButton from '../components/ToolButton/ToolButton';
 import LanguageSwitcher from '../components/LanguageSwitcher/LanguageSwitcher';
 import BackIcon from '../components/ToolButton/assets/back.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
+
+import {
+  LANG_DATA,
+  LEFT_TEXT,
+  RIGHT_TEXT,
+  CAT,
+  PHRASES,
+  PICK_SOLUTION,
+  PICK,
+  NEXT,
+  RESHUFFLE,
+  ANSWERED_ALL_QUESTIONS,
+  SOLUTION,
+  INPUT_AREA,
+  LEARNT_PHRASES,
+  LEARNT_CAT_NAME,
+  SEEN_CAT_NAME,
+  SEEN_PHRASES,
+} from '../translations/index';
+
 import {LANGUAGE_NAMES} from '../data/dataUtils';
 import {shuffleArray} from '../utils';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
@@ -32,6 +51,9 @@ export default ({
   seenPhrases,
   addSeenPhrase,
   currentCategoryId,
+  currentCategoryIdRoot,
+  nativeLanguage,
+  toggleLanguageName,
 }) => {
   const [originalPhrases, setOriginalPhrases] = useState([]);
   const [phrasesLeft, setPhrasesLeft] = useState([]);
@@ -39,6 +61,23 @@ export default ({
   const [answerOptions, setAnswerOptions] = useState([]);
   const [disableAllOptions, setDisableAllOptions] = useState(false);
   const [shouldReshuffle, setshouldReshuffle] = useState(false);
+
+  const leftText = LANG_DATA[LEFT_TEXT][nativeLanguage];
+  const rightText = LANG_DATA[RIGHT_TEXT][nativeLanguage];
+  const catText = LANG_DATA[CAT][nativeLanguage];
+  const phrasesText = LANG_DATA[PHRASES][nativeLanguage];
+  const pickSolution = LANG_DATA[PICK_SOLUTION][nativeLanguage];
+  const pickText = LANG_DATA[PICK][nativeLanguage];
+  const nextText = LANG_DATA[NEXT][nativeLanguage];
+  const reshuffleText = LANG_DATA[RESHUFFLE][nativeLanguage];
+  const answeredAllQuestionsText =
+    LANG_DATA[ANSWERED_ALL_QUESTIONS][nativeLanguage];
+  const solutionText = LANG_DATA[SOLUTION][nativeLanguage];
+  const inputAreaText = LANG_DATA[INPUT_AREA][nativeLanguage];
+  const learntPhraseText = LANG_DATA[LEARNT_PHRASES][nativeLanguage];
+  const seenPhraseText = LANG_DATA[SEEN_PHRASES][nativeLanguage];
+  const learntCatNameText = LANG_DATA[LEARNT_CAT_NAME][nativeLanguage];
+  const seenCatNameText = LANG_DATA[SEEN_CAT_NAME][nativeLanguage];
 
   useEffect(() => {
     setOriginalPhrases(categoryPhrases);
@@ -104,11 +143,6 @@ export default ({
     setAnswerOptionsCallback(originalAll, newPhrase);
   };
 
-  const learntCategory = categories.find(cat =>
-    cat.phrasesIds.includes(currentPhrase?.id),
-  );
-
-  const learntCatName = learntCategory?.name.en;
   const currentPhraseCategory = categories.find(cat =>
     cat.phrasesIds.includes(currentPhrase?.id),
   );
@@ -116,13 +150,9 @@ export default ({
   // Category name
   let catName = null;
   if (currentCategoryId === SEEN_PHRASES_ID) {
-    catName = `Seen phrase - ${
-      currentPhraseCategory?.name?.[LANGUAGE_NAMES.EN]
-    }`;
+    catName = `${seenPhraseText} - ${currentPhraseCategory?.name?.[seenCatNameText]}`;
   } else if (currentCategoryId === LEARNT_PRHASES_ID) {
-    catName = `Learnt phrase - ${
-      currentPhraseCategory?.name?.[LANGUAGE_NAMES.EN]
-    }`;
+    catName = `${learntPhraseText} - ${currentPhraseCategory?.name?.[learntCatNameText]}`;
   } else {
     catName = currentCategoryName;
   }
@@ -146,50 +176,51 @@ export default ({
               button={
                 <LanguageSwitcher
                   firstLanguage={LANGUAGE_NAMES.EN}
-                  LeftText="EN"
-                  RightText="MA"
+                  LeftText={leftText}
+                  RightText={rightText}
                   color="#FFFFFF"
                   iconType=""
                   iconName="swap-horiz"
-                  onPress={() => null}
+                  onPress={toggleLanguageName}
                   iconSize={24}
                 />
               }
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={() => null}>
                   <ModeIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
             />
           </View>
           <View style={styles.heading}>
-            <SectionHeading text="Category: " />
+            <SectionHeading text={catText} />
             <Text>{catName}</Text>
           </View>
           <View style={styles.heading}>
-            <SectionHeading text="The phrase: " />
+            <SectionHeading text={phrasesText} />
           </View>
           <View style={{marginBottom: 37}}>
             <Textarea
               editable={false}
               phrase={
                 shouldReshuffle
-                  ? 'You have answered all the questions in this category'
-                  : currentPhrase?.name?.[LANGUAGE_NAMES.MG]
+                  ? answeredAllQuestionsText
+                  : currentPhrase?.name?.[inputAreaText]
               }
             />
           </View>
           {!shouldReshuffle && Boolean(answerOptions && answerOptions.length) && (
             <View>
               <View style={styles.heading}>
-                <SectionHeading text="Pick a solution: " />
+                <SectionHeading text={pickSolution} />
               </View>
               <List
                 lang={LANGUAGE_NAMES.EN}
+                lang={solutionText}
                 data={answerOptions}
-                text="Pick"
+                text={pickText}
                 color="#06B6D4"
                 iconType="material-community"
                 iconName="arrow-right"
@@ -205,7 +236,7 @@ export default ({
               <NextButton
                 isDisabled={false}
                 textColor="#FFFFFF"
-                text={'Next'}
+                text={nextText}
                 onPress={nextAnswerCallback}
               />
             </View>
@@ -215,7 +246,7 @@ export default ({
               <NextButton
                 isDisabled={false}
                 textColor="#FFFFFF"
-                text={'Reshuffle'}
+                text={reshuffleText}
                 onPress={reshuffleCallback}
               />
             </View>

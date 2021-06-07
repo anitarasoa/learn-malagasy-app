@@ -6,6 +6,7 @@ import {
   setSeenPhrases,
   addSeenPhrase,
   addLearntPhrase,
+  toggleLanguageName,
 } from '../redux/actions';
 
 import {
@@ -17,6 +18,7 @@ import {
   seenPhrasesCategory,
   currentCategoryIdRoot,
   learntPhrases,
+  nativeLanguageRoot,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -31,7 +33,8 @@ function mapStateToProps(state) {
     seenPhrasesCategory: seenPhrasesCategory(state),
     leftPhrases: leftPhrases(state),
     currentCategoryId: currentCategoryIdRoot(state),
-  }
+    nativeLanguage: nativeLanguageRoot(state),
+  };
 }
 
 const mapDispatchToProps = {
@@ -40,6 +43,7 @@ const mapDispatchToProps = {
   addLearntPhrase,
   addSeenPhrase,
   setSeenPhrases,
+  toggleLanguageName,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learning);

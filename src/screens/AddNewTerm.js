@@ -1,5 +1,4 @@
 import React, {useRef, useState} from 'react';
-import {action} from '@storybook/addon-actions';
 
 import {
   View,
@@ -22,6 +21,16 @@ import BackIcon from '../components/ToolButton/assets/back.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import ArrowDownIcon from '../icons/arrow-down.svg';
 import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
+import {
+  SELECT_CAT,
+  CAT,
+  LANG_DATA,
+  LEFT_TEXT,
+  RIGHT_TEXT,
+  PHRASE_ENGLISH,
+  PHRASE_MALAGASY,
+  ADD,
+} from '../translations';
 
 export default ({
   // Nav provider
@@ -29,14 +38,23 @@ export default ({
   categories,
   nativeLanguage,
   addUserPhrase,
+  toggleLanguageName,
 }) => {
   const [englishTerm, setEnglishTerm] = useState('');
   const [malagasyTerm, setMalagasyTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState([]);
 
+  const selectCatText = LANG_DATA[SELECT_CAT][nativeLanguage];
+  const catText = LANG_DATA[CAT][nativeLanguage];
+  const leftText = LANG_DATA[LEFT_TEXT][nativeLanguage];
+  const rightText = LANG_DATA[RIGHT_TEXT][nativeLanguage];
+  const phraseEnglish = LANG_DATA[PHRASE_ENGLISH][nativeLanguage];
+  const phraseMalagasy = LANG_DATA[PHRASE_MALAGASY][nativeLanguage];
+  const addText = LANG_DATA[ADD][nativeLanguage];
+
   // Dropdown selector: reset and handle default text
   const dropdownRef = useRef({});
-  const defaultTextSelecter = 'Select Category';
+  const defaultTextSelecter = selectCatText;
   const IconWrapper = () => {
     return (
       <View style={{marginRight: 115}}>
@@ -79,7 +97,7 @@ export default ({
               />
               <ToolBar
                 button={
-                  <ToolButton onPress={action('clicked-add-button')}>
+                  <ToolButton onPress={() => null}>
                     <ModeIcon width={24} height={24} fill="#FFFFFF" />
                   </ToolButton>
                 }
@@ -88,12 +106,12 @@ export default ({
                 button={
                   <LanguageSwitcher
                     firstLanguage={LANGUAGE_NAMES.EN}
-                    LeftText="EN"
-                    RightText="MA"
+                    LeftText={leftText}
+                    RightText={rightText}
                     color="#FFFFFF"
                     iconType=""
                     iconName="swap-horiz"
-                    onPress={() => null}
+                    onPress={toggleLanguageName}
                     iconSize={24}
                   />
                 }
@@ -101,7 +119,7 @@ export default ({
             </View>
 
             <View style={styles.heading}>
-              <SectionHeading style={styles.dropdown} text={'Category: '} />
+              <SectionHeading style={styles.dropdown} text={catText} />
               <SelectDropdown
                 data={categories}
                 ref={dropdownRef}
@@ -125,7 +143,7 @@ export default ({
               />
             </View>
             <View style={(styles.heading, {paddingVertical: 20})}>
-              <SectionHeading text="The phrase in English: " />
+              <SectionHeading text={phraseEnglish} />
             </View>
             <View style={{marginBottom: 37}}>
               <Textarea
@@ -136,7 +154,7 @@ export default ({
               />
             </View>
             <View style={styles.heading}>
-              <SectionHeading text="The phrase in Malagasy: " />
+              <SectionHeading text={phraseMalagasy} />
             </View>
             <View style={{marginBottom: 37}}>
               <Textarea
@@ -151,7 +169,7 @@ export default ({
               <NextButton
                 isDisabled={!Boolean(englishTerm && malagasyTerm)}
                 textColor={englishTerm && malagasyTerm ? '#E5E5E5' : '#06B6D4'}
-                text={'Add'}
+                text={addText}
                 onPress={addNewTermHandler}
               />
             </View>

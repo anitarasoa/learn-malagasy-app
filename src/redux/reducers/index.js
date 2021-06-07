@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {combineReducers} from 'redux';
 
 // import all of constat case name for the switch
+import {LANGUAGE_NAMES} from '../../data/dataUtils';
+// import all of constat case name for the swich
 // in reducers
 import {
   SET_CATEGORIES,
@@ -13,6 +15,7 @@ import {
   SET_SEEN_PHRASES,
   SET_PHRASES_LEFT,
   SET_SEEN_PHRASES_CATEGORY,
+  TOOGLE_LANGUAGE_NAME,
 } from '../constants';
 
 // categories reducer
@@ -49,6 +52,10 @@ function nativeLanguage(state = '', action) {
   switch (action.type) {
     case SET_LANGUAGE_NAME:
       return action.payload;
+    case TOOGLE_LANGUAGE_NAME:
+      const switchlanguage =
+        state === LANGUAGE_NAMES.MG ? LANGUAGE_NAMES.EN : LANGUAGE_NAMES.MG;
+      return switchlanguage;
     default:
       return state;
   }

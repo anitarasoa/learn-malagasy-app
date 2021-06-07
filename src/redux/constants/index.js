@@ -9,3 +9,5 @@ export const SEEN_PHRASES_ID = '###seen-phrases###';
 export const SET_SEEN_PHRASES = 'SET_SEEN_PHRASES';
 export const SET_PHRASES_LEFT = 'SET_PHRASES_LEFT';
 export const SET_SEEN_PHRASES_CATEGORY = 'SET_SEEN_PHRASES_CATEGORY';
+export const USER_PHRASES = 'USER_PHRASES';
+export const TOOGLE_LANGUAGE_NAME = 'TOOGLE_LANGUAGE_NAME';
