@@ -6,4 +6,7 @@ export default {
   categoryPhrases: [],
   learntPhrases: [],
   nativeLanguage: LANGUAGE_NAMES.EN,
+  seenPhrases: [],
+  seenPhrasesCategory: null,
+  leftPhrases: null,
 };

@@ -1,11 +1,4 @@
 // import all of the constants from contants folder
-
-import {
-  USER_PHRASES_KEY,
-  LEARNT_PHRASES_KEY,
-  getStoreItem,
-  setStoreItem,
-} from '../../utils/storage';
 import {
   SET_CATEGORIES,
   SET_PHRASES,
@@ -13,8 +6,21 @@ import {
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
   USER_PHRASES,
+  SET_SEEN_PHRASES,
+  SET_PHRASES_LEFT,
+  SET_SEEN_PHRASES_CATEGORY,
 } from '../constants';
+
 import {getAllCategories as getAllLocalCategories} from '../../data/dataUtils';
+// import {getAllCategories} from '../../data/dataUtils';
+
+import {
+  storeData,
+  LEARNT_PHRASES_KEY,
+  SEEN_PHRASE_KEY,
+  USER_PHRASES_KEY,
+  getData,
+} from '../../utils/storage';
 
 // categories actions
 export function setCategories(categories) {
@@ -52,6 +58,15 @@ export function setLanguageName(language) {
   };
 }
 
+// Seen phrases with async storage
+export function setSeenPhrases(seenPhrases) {
+  return {
+    type: SET_SEEN_PHRASES,
+    payload: seenPhrases,
+  };
+}
+
+// Learnt phrases with async storage
 export function setLearntPhrases(learntPhrases) {
   return {
     type: SET_LEARNT_PHRASES,
@@ -59,57 +74,58 @@ export function setLearntPhrases(learntPhrases) {
   };
 }
 
+// Add learnt phrases
 export function addLearntPhrase(phrase) {
   return async dispatch => {
-    const storedLearntPhrases = await getStoreItem(LEARNT_PHRASES_KEY);
-    let dataToStore = null;
-    if (!storedLearntPhrases) {
-      dataToStore = [phrase];
-    } else {
-      dataToStore = [...storedLearntPhrases, phrase];
-    }
-    await setStoreItem(LEARNT_PHRASES_KEY, dataToStore);
+    const storedLearntPhrases = await getData(LEARNT_PHRASES_KEY);
+    let dataToStore = storedLearntPhrase
+      ? [...storedLearntPhrases, phrase]
+      : [phrase];
+    await storeData(LEARNT_PHRASES_KEY, dataToStore);
     dispatch(setLearntPhrases(dataToStore));
-    return Promise.resolve();
   };
 }
 
-// Adding new term actions
-
-export function setUserPhrases(phrases) {
-  return {
-    type: USER_PHRASES,
-    payload: phrases,
-  };
-}
-
-export function addUserPhrase(phrase) {
+// Add seen phrases
+export function addSeenPhrase(phrase) {
   return async dispatch => {
-    const storedPhrases = await getStoreItem(USER_PHRASES_KEY);
-    let dataToStore = null;
-    if (!storedPhrases) {
-      dataToStore = [phrase];
-    } else {
-      dataToStore = [...storedPhrases, phrase];
-    }
-
-    await setStoreItem(USER_PHRASES_KEY, dataToStore);
-    dispatch(setUserPhrases(dataToStore));
-    return Promise.resolve();
+    const storedSeenPhrases = await getData(SEEN_PHRASE_KEY);
+    let dataToStore = storedSeenPhrases
+      ? [...storedLearntPhrases, phrase]
+      : [phrase];
+    await storeData(SEEN_PHRASE_KEY, dataToStore);
+    dispatch(setSeenPhrases(dataToStore));
   };
 }
 
 export const synchronizeStorageToRedux = () => {
   return async dispatch => {
-    const storedPhrases = await getStoreItem(USER_PHRASES_KEY);
-    const storedLearntPhrase = await getStoreItem(LEARNT_PHRASES_KEY);
+    const storedPhrases = await getData(USER_PHRASES_KEY);
+    const storedLearntPhrase = await getData(LEARNT_PHRASES_KEY);
+    const storedSeenPhrase = await getData(SEEN_PHRASE_KEY);
     if (storedPhrases) {
       dispatch(setUserPhrases(storedPhrases));
     }
-
     if (storedLearntPhrase) {
       dispatch(setLearntPhrases(storedLearntPhrase));
+    }
+    if (storedSeenPhrase) {
+      dispatch(setSeenPhrases(storedSeenPhrase));
     }
     return Promise.resolve();
   };
 };
+
+export function setLeftPhrase(category) {
+  return {
+    type: SET_PHRASES_LEFT,
+    payload: category,
+  };
+}
+
+export function setSeenPhraseCategory(category) {
+  return {
+    type: SET_SEEN_PHRASES_CATEGORY,
+    payload: category,
+  };
+}

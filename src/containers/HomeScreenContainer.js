@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import Home from '../screens/Home';
+
 import {
   setCategories,
   setCurrentCategory,
@@ -7,7 +8,9 @@ import {
   setLearntPhrases,
   synchronizeStorageToRedux,
   getAllCategories,
+  setSeenPhrases,
 } from '../redux/actions';
+
 import {
   categoriesRoot,
   nativeLanguageRoot,
@@ -15,6 +18,7 @@ import {
   categoryPhrasesRoot,
   currentCategoryIdRoot,
   userPhrasesRoot,
+  seenPhrases,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -25,6 +29,7 @@ function mapStateToProps(state) {
     categoryPhrases: categoryPhrasesRoot(state),
     currentCategoryId: currentCategoryIdRoot(state),
     userPhrases: userPhrasesRoot(state),
+    seenPhrases: seenPhrases(state),
   };
 }
 const mapDispatchToProps = {
@@ -34,6 +39,7 @@ const mapDispatchToProps = {
   setLearntPhrases,
   getAllCategories,
   synchronizeStorageToRedux,
+  setSeenPhrases,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

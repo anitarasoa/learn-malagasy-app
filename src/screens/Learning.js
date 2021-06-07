@@ -19,7 +19,7 @@ import BackIcon from '../components/ToolButton/assets/back.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LANGUAGE_NAMES} from '../data/dataUtils';
 import {shuffleArray} from '../utils';
-import {LEARNT_PRHASES_ID} from '../redux/constants/index';
+import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
 
 export default ({
   //nav provider
@@ -29,7 +29,9 @@ export default ({
   addLearntPhrase,
   learntPhrases,
   categories,
-  currentCategoryIdRoot,
+  seenPhrases,
+  addSeenPhrase,
+  currentCategoryId,
 }) => {
   const [originalPhrases, setOriginalPhrases] = useState([]);
   const [phrasesLeft, setPhrasesLeft] = useState([]);
@@ -59,6 +61,8 @@ export default ({
         console.log('add item', item);
         addLearntPhrase(item);
       } else {
+        seenPhrases.every(phrase => phrase.id !== currentPhrase.id) &&
+          addSeenPhrase(item);
       }
 
       setDisableAllOptions(true);
@@ -105,6 +109,23 @@ export default ({
   );
 
   const learntCatName = learntCategory?.name.en;
+  const currentPhraseCategory = categories.find(cat =>
+    cat.phrasesIds.includes(currentPhrase?.id),
+  );
+
+  // Category name
+  let catName = null;
+  if (currentCategoryId === SEEN_PHRASES_ID) {
+    catName = `Seen phrase - ${
+      currentPhraseCategory?.name?.[LANGUAGE_NAMES.EN]
+    }`;
+  } else if (currentCategoryId === LEARNT_PRHASES_ID) {
+    catName = `Learnt phrase - ${
+      currentPhraseCategory?.name?.[LANGUAGE_NAMES.EN]
+    }`;
+  } else {
+    catName = currentCategoryName;
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -145,13 +166,7 @@ export default ({
           </View>
           <View style={styles.heading}>
             <SectionHeading text="Category: " />
-            <Text>
-              {`${
-                currentCategoryIdRoot === LEARNT_PRHASES_ID
-                  ? `Learnt Phrases - ${learntCatName}`
-                  : currentCategoryName
-              } `}
-            </Text>
+            <Text>{catName}</Text>
           </View>
           <View style={styles.heading}>
             <SectionHeading text="The phrase: " />
