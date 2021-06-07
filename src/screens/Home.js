@@ -24,7 +24,6 @@ import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
-import {LEARNT_PHRASES_KEY, SEEN_PHRASE_KEY} from '../utils/localStorage';
 
 export default ({
   navigation,
@@ -70,8 +69,8 @@ export default ({
     }
   };
 
-  const openSeenPhrases = async item => {
-    setCurrentCategory(item.id);
+  const openSeenPhrases = () => {
+    setCurrentCategory(SEEN_PHRASES_ID);
     setPhrases(seenPhrases);
     seenPhrases.length !== 0 && navigation.navigate('Learn');
   };
@@ -107,7 +106,7 @@ export default ({
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={openSeenPhrases}>
                   <CheckIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
