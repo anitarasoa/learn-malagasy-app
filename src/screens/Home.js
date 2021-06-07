@@ -29,6 +29,7 @@ import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
+import { LEARNT_PHRASES_KEY } from '../utils/storage';
 
 export default ({
   navigation,
@@ -52,8 +53,9 @@ export default ({
   const wordsAndPhrases = LANG_DATA[WORDS_PHRASES][nativeLanguage];
 
   useEffect(() => {
-    // fetch categories
+    // handle the storing new phrases
     synchronizeStorageToRedux();
+    // fetch categories
     getAllCategories();
   }, []);
 
@@ -74,12 +76,10 @@ export default ({
   };
 
   const openCategoryLearntPhrases = item => {
-    setCurrentCategory(item.id);
-    // fetch Phrases for categor
+    setCurrentCategory(LEARNT_PRHASES_ID);
     setPhrases(learntPhrases);
-    if (learntPhrases.length !== 0) {
-      navigation.navigate('Learn');
-    }
+    learntPhrases.length !== 0 && navigation.navigate('Learn');
+    setCurrentCategory(item.id);
   };
 
   const openSeenPhrases = () => {

@@ -20,6 +20,7 @@ import {
   currentCategoryIdRoot,
   userPhrasesRoot,
   seenPhrases,
+  learntPhrases,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -31,6 +32,7 @@ function mapStateToProps(state) {
     currentCategoryId: currentCategoryIdRoot(state),
     userPhrases: userPhrasesRoot(state),
     seenPhrases: seenPhrases(state),
+    learntPhrases: learntPhrases(state),
   };
 }
 const mapDispatchToProps = {

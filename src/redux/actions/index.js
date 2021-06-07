@@ -98,19 +98,44 @@ export function addSeenPhrase(phrase) {
   };
 }
 
-export const synchronizeStorageToRedux = () => {
+// Adding new term actions
+
+export function setUserPhrases(phrases) {
+  return {
+    type: USER_PHRASES,
+    payload: phrases,
+  };
+}
+
+export function addUserPhrase(phrase) {
   return async dispatch => {
     const storedPhrases = await getData(USER_PHRASES_KEY);
+    let dataToStore = null;
+    if (!storedPhrases) {
+      dataToStore = [phrase];
+    } else {
+      dataToStore = [...storedPhrases, phrase];
+    }
+
+    await storeData(USER_PHRASES_KEY, dataToStore);
+    dispatch(setUserPhrases(dataToStore));
+    return Promise.resolve();
+  };
+}
+
+export const synchronizeStorageToRedux = () => {
+  return async dispatch => {
+    const storedUserPhrases = await getData(USER_PHRASES_KEY);
     const storedLearntPhrase = await getData(LEARNT_PHRASES_KEY);
     const storedSeenPhrase = await getData(SEEN_PHRASE_KEY);
-    if (storedPhrases) {
-      dispatch(setUserPhrases(storedPhrases));
+    if (storedUserPhrases) {
+      dispatch(setUserPhrases(storedUserPhrases));
     }
     if (storedLearntPhrase) {
       dispatch(setLearntPhrases(storedLearntPhrase));
     }
     if (storedSeenPhrase) {
-      dispatch(setSeenPhrases(storedSeenPhrase));
+      dispatch(setSeenPhrases(storedSeenPhrase)); 
     }
     return Promise.resolve();
   };
