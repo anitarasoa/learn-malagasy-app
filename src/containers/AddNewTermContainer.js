@@ -5,7 +5,7 @@ import {
   userPhrasesRoot,
   nativeLanguageRoot,
 } from '../redux/selectors';
-import {addUserPhrase} from '../redux/actions';
+import {addUserPhrase, toggleLanguageName} from '../redux/actions';
 
 function mapStateToProps(state) {
   return {
@@ -16,6 +16,7 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   addUserPhrase,
+  toggleLanguageName,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewTerm);

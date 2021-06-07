@@ -1,11 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {action} from '@storybook/addon-actions';
+import React, {useEffect} from 'react';
 
+import {LANGUAGE_NAMES, getPhrasesForCategoryId} from '../data/dataUtils';
 import {
-  LANGUAGE_NAMES,
-  getPhrasesForCategoryId,
-  getAllCategories,
-} from '../data/dataUtils';
+  LANG_DATA,
+  SELECT_CAT,
+  SEEN_PHRASES,
+  LEARN,
+  LEARNT_PHRASES,
+  LEFT_TEXT,
+  RIGHT_TEXT,
+  WORDS_PHRASES,
+} from '../translations/index';
 
 import {
   View,
@@ -36,8 +41,16 @@ export default ({
   getAllCategories,
   userPhrases,
   synchronizeStorageToRedux,
-  // getAllCategoriesAction,
+  toggleLanguageName,
 }) => {
+  const selectCatText = LANG_DATA[SELECT_CAT][nativeLanguage];
+  const seenPhraseText = LANG_DATA[SEEN_PHRASES][nativeLanguage];
+  const learnText = LANG_DATA[LEARN][nativeLanguage];
+  const learntPhraseText = LANG_DATA[LEARNT_PHRASES][nativeLanguage];
+  const leftText = LANG_DATA[LEFT_TEXT][nativeLanguage];
+  const rightText = LANG_DATA[RIGHT_TEXT][nativeLanguage];
+  const wordsAndPhrases = LANG_DATA[WORDS_PHRASES][nativeLanguage];
+
   useEffect(() => {
     // fetch categories
     synchronizeStorageToRedux();
@@ -94,12 +107,12 @@ export default ({
               button={
                 <LanguageSwitcher
                   firstLanguage={LANGUAGE_NAMES.EN}
-                  LeftText="EN"
-                  RightText="MA"
+                  LeftText={leftText}
+                  RightText={rightText}
                   color="#FFFFFF"
                   iconType=""
                   iconName="swap-horiz"
-                  onPress={() => null}
+                  onPress={toggleLanguageName}
                   iconSize={24}
                 />
               }
@@ -120,26 +133,26 @@ export default ({
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={() => null}>
                   <ModeIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
             />
           </View>
           <View style={styles.heading}>
-            <SectionHeading text="Select a category:" />
+            <SectionHeading text={selectCatText} />
           </View>
           <List
             lang={nativeLanguage}
             data={categories}
-            text={'Learn'}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openCategoryPhrases}
           />
           <View style={styles.heading}>
-            <SectionHeading text="Seen phrases:" />
+            <SectionHeading text={`${seenPhraseText}: `} />
           </View>
           <List
             data={[
@@ -147,28 +160,28 @@ export default ({
                 id: `${SEEN_PHRASES_ID}`,
                 name: `${
                   seenPhrases.length === 0 ? 'No' : `${seenPhrases.length}`
-                } words and phrases`,
+                } ${wordsAndPhrases}`,
               },
             ]}
-            text={'Learn'}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openSeenPhrases}
           />
           <View style={styles.heading}>
-            <SectionHeading text="Learnt phrases:" />
+            <SectionHeading text={`${learntPhraseText}: `} />
           </View>
           <List
             data={[
               {
                 id: LEARNT_PRHASES_ID,
                 name: `${
-                  learntPhrases?.length ? learntPhrases?.length : 'No'
-                } words and phrases`,
+                  learntPhrases.length ? learntPhrases.length : 'No'
+                } ${wordsAndPhrases}`,
               },
             ]}
-            text={'Learn'}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
