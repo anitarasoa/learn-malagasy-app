@@ -61,8 +61,12 @@ export default ({
         console.log('add item', item);
         addLearntPhrase(item);
       } else {
+<<<<<<< HEAD
         seenPhrases.every(phrase => phrase.id !== currentPhrase.id) &&
           addSeenPhrase(item);
+=======
+        // TODO add to seen
+>>>>>>> fix bug
       }
 
       setDisableAllOptions(true);

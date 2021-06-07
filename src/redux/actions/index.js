@@ -100,13 +100,6 @@ export function addSeenPhrase(phrase) {
 
 // Adding new term actions
 
-export function setSelectedCategory(category) {
-  return {
-    type: SELECTE_VALUE,
-    payload: category,
-  };
-}
-
 export function setUserPhrases(phrases) {
   return {
     type: USER_PHRASES,
