@@ -51,7 +51,6 @@ export default ({
   seenPhrases,
   addSeenPhrase,
   currentCategoryId,
-  currentCategoryIdRoot,
   nativeLanguage,
   toggleLanguageName,
 }) => {
@@ -97,7 +96,6 @@ export default ({
         item.id === currentPhrase.id &&
         learntPhrases?.every(phrase => phrase.id !== currentPhrase.id)
       ) {
-        console.log('add item', item);
         addLearntPhrase(item);
       } else {
         seenPhrases.every(phrase => phrase.id !== currentPhrase.id) &&

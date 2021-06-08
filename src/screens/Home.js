@@ -29,8 +29,7 @@ import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
-import { LEARNT_PHRASES_KEY } from '../utils/storage';
-
+99;
 export default ({
   navigation,
   categories,
@@ -75,11 +74,11 @@ export default ({
     navigation.navigate('Learn');
   };
 
-  const openCategoryLearntPhrases = item => {
+  // fetch Phrases for category
+  const openCategoryLearntPhrases = () => {
     setCurrentCategory(LEARNT_PRHASES_ID);
     setPhrases(learntPhrases);
     learntPhrases.length !== 0 && navigation.navigate('Learn');
-    setCurrentCategory(item.id);
   };
 
   const openSeenPhrases = () => {
