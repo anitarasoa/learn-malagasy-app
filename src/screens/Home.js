@@ -1,11 +1,16 @@
 import React, {useEffect} from 'react';
-import {action} from '@storybook/addon-actions';
 
+import {LANGUAGE_NAMES, getPhrasesForCategoryId} from '../data/dataUtils';
 import {
-  LANGUAGE_NAMES,
-  getPhrasesForCategoryId,
-  getAllCategories,
-} from '../data/dataUtils';
+  LANG_DATA,
+  SELECT_CAT,
+  SEEN_PHRASES,
+  LEARN,
+  LEARNT_PHRASES,
+  LEFT_TEXT,
+  RIGHT_TEXT,
+  WORDS_PHRASES,
+} from '../translations/index';
 
 import {
   View,
@@ -23,41 +28,63 @@ import AddIcon from '../components/ToolButton/assets/add.svg';
 import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
-import {LEARNT_PRHASES_ID} from '../redux/constants/index';
-
+import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
+99;
 export default ({
-  //nav provider
   navigation,
-  //state props
   categories,
   nativeLanguage,
-  //actions
-  setCategories,
   setCurrentCategory,
+  seenPhrases,
   setPhrases,
   learntPhrases,
+  getAllCategories,
+  userPhrases,
   synchronizeStorageToRedux,
+  toggleLanguageName,
 }) => {
+  const selectCatText = LANG_DATA[SELECT_CAT][nativeLanguage];
+  const seenPhraseText = LANG_DATA[SEEN_PHRASES][nativeLanguage];
+  const learnText = LANG_DATA[LEARN][nativeLanguage];
+  const learntPhraseText = LANG_DATA[LEARNT_PHRASES][nativeLanguage];
+  const leftText = LANG_DATA[LEFT_TEXT][nativeLanguage];
+  const rightText = LANG_DATA[RIGHT_TEXT][nativeLanguage];
+  const wordsAndPhrases = LANG_DATA[WORDS_PHRASES][nativeLanguage];
+
   useEffect(() => {
-    // fetch categories
+    // handle the storing new phrases
     synchronizeStorageToRedux();
-    const categories = getAllCategories();
-    setCategories(categories);
+    // fetch categories
+    getAllCategories();
   }, []);
 
   const openCategoryPhrases = item => {
     setCurrentCategory(item.id);
     // fetch Phrases for category
     const phrasesForCategory = getPhrasesForCategoryId(item.id);
-    setPhrases(phrasesForCategory);
+    const filterUserPhrases = userPhrases.filter(
+      userPhrase => userPhrase.catId === item.id,
+    );
+
+    const combinationNewCatAndCurrentCat = [
+      ...phrasesForCategory,
+      ...filterUserPhrases,
+    ];
+    setPhrases(combinationNewCatAndCurrentCat);
     navigation.navigate('Learn');
   };
 
+  // fetch Phrases for category
   const openCategoryLearntPhrases = () => {
     setCurrentCategory(LEARNT_PRHASES_ID);
-    // fetch Phrases for category
     setPhrases(learntPhrases);
-    navigation.navigate('Learn');
+    learntPhrases.length !== 0 && navigation.navigate('Learn');
+  };
+
+  const openSeenPhrases = () => {
+    setCurrentCategory(SEEN_PHRASES_ID);
+    setPhrases(seenPhrases);
+    seenPhrases.length !== 0 && navigation.navigate('Learn');
   };
 
   return (
@@ -67,7 +94,10 @@ export default ({
           <View style={styles.header}>
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton
+                  onPress={() => {
+                    navigation.navigate('NewTerm');
+                  }}>
                   <AddIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
@@ -76,19 +106,19 @@ export default ({
               button={
                 <LanguageSwitcher
                   firstLanguage={LANGUAGE_NAMES.EN}
-                  LeftText="EN"
-                  RightText="MA"
+                  LeftText={leftText}
+                  RightText={rightText}
                   color="#FFFFFF"
                   iconType=""
                   iconName="swap-horiz"
-                  onPress={() => null}
+                  onPress={toggleLanguageName}
                   iconSize={24}
                 />
               }
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={openSeenPhrases}>
                   <CheckIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
@@ -102,37 +132,44 @@ export default ({
             />
             <ToolBar
               button={
-                <ToolButton onPress={action('clicked-add-button')}>
+                <ToolButton onPress={() => null}>
                   <ModeIcon width={24} height={24} fill="#FFFFFF" />
                 </ToolButton>
               }
             />
           </View>
           <View style={styles.heading}>
-            <SectionHeading text="Select a category:" />
+            <SectionHeading text={selectCatText} />
           </View>
           <List
             lang={nativeLanguage}
             data={categories}
-            text={'Learn'}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openCategoryPhrases}
           />
           <View style={styles.heading}>
-            <SectionHeading text="Seen phrases:" />
+            <SectionHeading text={`${seenPhraseText}: `} />
           </View>
           <List
-            data={[{id: 1, name: '35 words and phrases'}]}
-            text={'Learn'}
+            data={[
+              {
+                id: `${SEEN_PHRASES_ID}`,
+                name: `${
+                  seenPhrases.length === 0 ? 'No' : `${seenPhrases.length}`
+                } ${wordsAndPhrases}`,
+              },
+            ]}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"
-            makeAction={() => {}}
+            makeAction={openSeenPhrases}
           />
           <View style={styles.heading}>
-            <SectionHeading text="Learnt phrases:" />
+            <SectionHeading text={`${learntPhraseText}: `} />
           </View>
           <List
             data={[
@@ -140,10 +177,10 @@ export default ({
                 id: LEARNT_PRHASES_ID,
                 name: `${
                   learntPhrases.length ? learntPhrases.length : 'No'
-                } words and phrases`,
+                } ${wordsAndPhrases}`,
               },
             ]}
-            text={'Learn'}
+            text={learnText}
             color="#06B6D4"
             iconType="material-community"
             iconName="arrow-right"

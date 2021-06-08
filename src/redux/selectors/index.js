@@ -30,5 +30,8 @@ export const currentCategoryName = createSelector(
     return name;
   },
 );
-
+export const userPhrasesRoot = state => state.userPhrases;
 export const learntPhrases = state => state.learntPhrases;
+export const seenPhrases = state => state.seenPhrases;
+export const leftPhrases = state => state.leftPhrases;
+export const seenPhrasesCategory = state => state.seenPhrasesCategory;

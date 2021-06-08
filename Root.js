@@ -1,5 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
+
 // import Storybook from './storybook';
+
 import App from './App';
 
 const Root = () => {
@@ -18,7 +20,7 @@ const Root = () => {
   }, [toggleStorybook]);
 
   // return storybookActive ? <Storybook /> : <App />;
-  return setStorybookActive ? <App /> : <App />;
+  return storybookActive ? <App /> : <App />;
 };
 
 export default Root;

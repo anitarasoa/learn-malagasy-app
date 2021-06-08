@@ -1,5 +1,8 @@
 import {combineReducers} from 'redux';
+
 // import all of constat case name for the switch
+import {LANGUAGE_NAMES} from '../../data/dataUtils';
+// import all of constat case name for the swich
 // in reducers
 import {
   SET_CATEGORIES,
@@ -7,7 +10,13 @@ import {
   SET_LANGUAGE_NAME,
   SET_CURRENT_CATEGORY,
   SET_LEARNT_PHRASES,
+  USER_PHRASES,
+  SET_SEEN_PHRASES,
+  SET_PHRASES_LEFT,
+  SET_SEEN_PHRASES_CATEGORY,
+  TOOGLE_LANGUAGE_NAME,
 } from '../constants';
+
 // categories reducer
 function categories(state = [], action) {
   switch (action.type) {
@@ -42,6 +51,10 @@ function nativeLanguage(state = '', action) {
   switch (action.type) {
     case SET_LANGUAGE_NAME:
       return action.payload;
+    case TOOGLE_LANGUAGE_NAME:
+      const switchlanguage =
+        state === LANGUAGE_NAMES.MG ? LANGUAGE_NAMES.EN : LANGUAGE_NAMES.MG;
+      return switchlanguage;
     default:
       return state;
   }
@@ -56,6 +69,42 @@ function learntPhrases(state = [], action) {
   }
 }
 
+function userPhrases(state = [], action) {
+  switch (action.type) {
+    case USER_PHRASES:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function seenPhrases(state = [], action) {
+  switch (action.type) {
+    case SET_SEEN_PHRASES:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function leftPhrases(state = null, action) {
+  switch (action.type) {
+    case SET_PHRASES_LEFT:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function seenPhrasesCategory(state = null, action) {
+  switch (action.type) {
+    case SET_SEEN_PHRASES_CATEGORY:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 // combine all of the reducers together
 export default combineReducers({
   currentCategoryId,
@@ -63,4 +112,8 @@ export default combineReducers({
   categoryPhrases,
   nativeLanguage,
   learntPhrases,
+  userPhrases,
+  seenPhrases,
+  seenPhrasesCategory,
+  leftPhrases,
 });

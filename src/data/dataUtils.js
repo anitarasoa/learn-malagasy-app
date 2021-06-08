@@ -8,13 +8,12 @@ export const LANGUAGE_NAMES = {
 
 /// API exposed - we are using async to be ready for external source of data
 
-export const getAllCategories = () => {
-  return categoriesData.categories;
+export const getAllCategories = async () => {
+  return Promise.resolve(categoriesData.categories);
 };
 
 export const getPhrasesForCategoryId = catId => {
   const phrasesIds = getPhraseIdsForCategory(catId);
-
   const allPhrases = getAllPhrases();
   const selectedPhrases = allPhrases.filter(phrase =>
     phrasesIds.includes(phrase.id),
