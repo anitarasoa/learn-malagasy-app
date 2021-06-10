@@ -1,13 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {TouchableHighlight, StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
+import {getStyle, TOOL_BAR} from '../../themeMode';
 
-export default function ToolBar({button}) {
-  return <View style={styles.button}>{button}</View>;
+export default function ToolBar({button, themeMode}) {
+  return <View style={getStyle(TOOL_BAR, themeMode)}>{button}</View>;
 }
-
-const styles = StyleSheet.create({
-  button: {
-    marginRight: 10,
-  },
-});

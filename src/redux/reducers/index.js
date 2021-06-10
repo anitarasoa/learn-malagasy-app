@@ -15,7 +15,10 @@ import {
   SET_PHRASES_LEFT,
   SET_SEEN_PHRASES_CATEGORY,
   TOOGLE_LANGUAGE_NAME,
+  SET_THEME_MODE,
 } from '../constants';
+
+import {DARK_MODE, LIGHT_MODE} from '../../themeMode';
 
 // categories reducer
 function categories(state = [], action) {
@@ -78,6 +81,17 @@ function userPhrases(state = [], action) {
   }
 }
 
+function themeMode(state = '', action) {
+  switch (action.type) {
+    case SET_THEME_MODE: {
+      const mode = state === LIGHT_MODE ? DARK_MODE : LIGHT_MODE;
+      return mode;
+    }
+    default:
+      return state;
+  }
+}
+
 function seenPhrases(state = [], action) {
   switch (action.type) {
     case SET_SEEN_PHRASES:
@@ -116,4 +130,5 @@ export default combineReducers({
   seenPhrases,
   seenPhrasesCategory,
   leftPhrases,
+  themeMode,
 });

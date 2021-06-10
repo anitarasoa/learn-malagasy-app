@@ -4,6 +4,7 @@ import {
   setSeenPhraseCategory,
   setCategories,
   setSeenPhrases,
+  setThemeMode,
   addSeenPhrase,
   addLearntPhrase,
   toggleLanguageName,
@@ -19,6 +20,7 @@ import {
   currentCategoryIdRoot,
   learntPhrases,
   nativeLanguageRoot,
+  themeMode,
 } from '../redux/selectors';
 
 function mapStateToProps(state) {
@@ -27,13 +29,13 @@ function mapStateToProps(state) {
     categoryPhrases: categoryPhrasesRoot(state),
     currentCategoryName: currentCategoryName(state),
     learntPhrases: learntPhrases(state),
-    categories: categoriesRoot(state),
     currentCategoryIdRoot: currentCategoryIdRoot(state),
     seenPhrases: seenPhrases(state),
     seenPhrasesCategory: seenPhrasesCategory(state),
     leftPhrases: leftPhrases(state),
     currentCategoryId: currentCategoryIdRoot(state),
     nativeLanguage: nativeLanguageRoot(state),
+    themeMode: themeMode(state),
   };
 }
 
@@ -44,6 +46,7 @@ const mapDispatchToProps = {
   addSeenPhrase,
   setSeenPhrases,
   toggleLanguageName,
+  setThemeMode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Learning);
