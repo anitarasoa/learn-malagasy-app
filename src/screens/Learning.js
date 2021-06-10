@@ -36,7 +36,7 @@ import {
   SEEN_PHRASES,
 } from '../translations/index';
 
-import {LANGUAGE_NAMES} from '../data/dataUtils';
+import {getPhrasesForCategoryId, LANGUAGE_NAMES} from '../data/dataUtils';
 import {shuffleArray} from '../utils';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
 
@@ -83,12 +83,10 @@ export default ({
     setNewQuestionPhrase(categoryPhrases, categoryPhrases);
   }, [categoryPhrases]);
 
-  const setAnswerOptionsCallback = (original, current) => {
-    const originWithoutCurrent = original.filter(phr => phr.id !== current.id);
-    const randomFromAll = shuffleArray(originWithoutCurrent).slice(0, 3);
-    const randomWithCorrect = shuffleArray([...randomFromAll, current]);
-    setAnswerOptions(randomWithCorrect);
-  };
+  // When I am on learnt and seen phrases
+  // - Find origin category of the phrase
+  // - Create answer options from these category phrases
+  // - Repeat for next phrases from learnt or seen
 
   const selectAnswerCallback = useCallback(
     item => {
@@ -106,11 +104,42 @@ export default ({
       const answerOptionsWithSelected = answerOptions.map(phrase => {
         return {...phrase, isSelected: phrase.id === item.id};
       });
-
       setAnswerOptions(answerOptionsWithSelected);
     },
     [currentPhrase, setDisableAllOptions, answerOptions],
   );
+
+  const currentPhraseCategory = categories.find(cat =>
+    cat.phrasesIds.includes(currentPhrase?.id),
+  );
+
+  let catName = null;
+  if (currentCategoryId === SEEN_PHRASES_ID) {
+    catName = `${seenPhraseText} - ${currentPhraseCategory?.name?.[seenCatNameText]}`;
+  } else if (currentCategoryId === LEARNT_PRHASES_ID) {
+    catName = `${learntPhraseText} - ${currentPhraseCategory?.name?.[learntCatNameText]}`;
+  } else {
+    catName = currentCategoryName;
+  }
+
+  const setAnswerOptionsCallback = (original, current) => {
+    const originWithoutCurrent = original.filter(phr => phr.id !== current.id);
+    // Find a category
+    const phraseCategoryId = categories.find(cat =>
+      cat.phrasesIds.includes(current?.id),
+    );
+    // Get all the phrases based on the current category
+    const allAppendixPhrases = getPhrasesForCategoryId(phraseCategoryId?.id);
+    const appendixPhrase = shuffleArray(allAppendixPhrases).slice(0, 3);
+    const randomFromAll = shuffleArray(originWithoutCurrent).slice(0, 3);
+    let randomWithCorrect = shuffleArray([...randomFromAll, current]);
+    // Check if it is seen or learnt phrases, then change randomFromAll into appendixPhrase
+    if (seenPhrases || learntPhrases) {
+      appendixPhrase.every(phrase => phrase.id !== current.id);
+      randomWithCorrect = shuffleArray([...appendixPhrase, current]);
+    }
+    setAnswerOptions(randomWithCorrect);
+  };
 
   const nextAnswerCallback = useCallback(() => {
     if (!Boolean(phrasesLeft.length)) {
@@ -140,20 +169,6 @@ export default ({
     setCurrentPhrase(newPhrase);
     setAnswerOptionsCallback(originalAll, newPhrase);
   };
-
-  const currentPhraseCategory = categories.find(cat =>
-    cat.phrasesIds.includes(currentPhrase?.id),
-  );
-
-  // Category name
-  let catName = null;
-  if (currentCategoryId === SEEN_PHRASES_ID) {
-    catName = `${seenPhraseText} - ${currentPhraseCategory?.name?.[seenCatNameText]}`;
-  } else if (currentCategoryId === LEARNT_PRHASES_ID) {
-    catName = `${learntPhraseText} - ${currentPhraseCategory?.name?.[learntCatNameText]}`;
-  } else {
-    catName = currentCategoryName;
-  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -228,7 +243,6 @@ export default ({
               />
             </View>
           )}
-
           {disableAllOptions && !shouldReshuffle && (
             <View style={{marginTop: 45}}>
               <NextButton
