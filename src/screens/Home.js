@@ -29,7 +29,7 @@ import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
-99;
+
 export default ({
   navigation,
   categories,
@@ -109,7 +109,6 @@ export default ({
                   LeftText={leftText}
                   RightText={rightText}
                   color="#FFFFFF"
-                  iconType=""
                   iconName="swap-horiz"
                   onPress={toggleLanguageName}
                   iconSize={24}

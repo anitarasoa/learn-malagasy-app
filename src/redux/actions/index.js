@@ -78,7 +78,7 @@ export function setLearntPhrases(learntPhrases) {
 export function addLearntPhrase(phrase) {
   return async dispatch => {
     const storedLearntPhrases = await getData(LEARNT_PHRASES_KEY);
-    let dataToStore = storedLearntPhrase
+    let dataToStore = storedLearntPhrases
       ? [...storedLearntPhrases, phrase]
       : [phrase];
     await storeData(LEARNT_PHRASES_KEY, dataToStore);
@@ -91,15 +91,14 @@ export function addSeenPhrase(phrase) {
   return async dispatch => {
     const storedSeenPhrases = await getData(SEEN_PHRASE_KEY);
     let dataToStore = storedSeenPhrases
-      ? [...storedLearntPhrases, phrase]
+      ? [...storedSeenPhrases, phrase]
       : [phrase];
-    await storeData(SEEN_PHRASE_KEY, dataToStore);
     dispatch(setSeenPhrases(dataToStore));
+    await storeData(SEEN_PHRASE_KEY, dataToStore);
   };
 }
 
 // Adding new term actions
-
 export function setUserPhrases(phrases) {
   return {
     type: USER_PHRASES,
@@ -110,16 +109,9 @@ export function setUserPhrases(phrases) {
 export function addUserPhrase(phrase) {
   return async dispatch => {
     const storedPhrases = await getData(USER_PHRASES_KEY);
-    let dataToStore = null;
-    if (!storedPhrases) {
-      dataToStore = [phrase];
-    } else {
-      dataToStore = [...storedPhrases, phrase];
-    }
-
+    let dataToStore = storedPhrases ? [...storedPhrases, phrase] : [phrase];
     await storeData(USER_PHRASES_KEY, dataToStore);
     dispatch(setUserPhrases(dataToStore));
-    return Promise.resolve();
   };
 }
 
@@ -135,7 +127,7 @@ export const synchronizeStorageToRedux = () => {
       dispatch(setLearntPhrases(storedLearntPhrase));
     }
     if (storedSeenPhrase) {
-      dispatch(setSeenPhrases(storedSeenPhrase)); 
+      dispatch(setSeenPhrases(storedSeenPhrase));
     }
     return Promise.resolve();
   };
