@@ -83,11 +83,6 @@ export default ({
     setNewQuestionPhrase(categoryPhrases, categoryPhrases);
   }, [categoryPhrases]);
 
-  // When I am on learnt and seen phrases
-  // - Find origin category of the phrase
-  // - Create answer options from these category phrases
-  // - Repeat for next phrases from learnt or seen
-
   const selectAnswerCallback = useCallback(
     item => {
       if (
