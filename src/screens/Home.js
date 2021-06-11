@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-
 import {LANGUAGE_NAMES, getPhrasesForCategoryId} from '../data/dataUtils';
 import {
   LANG_DATA,
@@ -11,13 +10,7 @@ import {
   RIGHT_TEXT,
   WORDS_PHRASES,
 } from '../translations/index';
-
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {View, SafeAreaView, KeyboardAvoidingView} from 'react-native';
 
 import List from '../components/List/List';
 import SectionHeading from '../components/SectionHeading/SectionHeading';
@@ -29,6 +22,14 @@ import CheckIcon from '../components/ToolButton/assets/check.svg';
 import CheckAllIcon from '../components/ToolButton/assets/check-all.svg';
 import ModeIcon from '../components/ToolButton/assets/mode.svg';
 import {LEARNT_PRHASES_ID, SEEN_PHRASES_ID} from '../redux/constants/index';
+
+import {
+  getStyle,
+  getFillColor,
+  CONTAINER_STYLE,
+  HEADER_STYLE,
+  HEADING_STYLE,
+} from '../themeMode';
 
 export default ({
   navigation,
@@ -42,6 +43,8 @@ export default ({
   userPhrases,
   synchronizeStorageToRedux,
   toggleLanguageName,
+  themeMode,
+  setThemeMode,
 }) => {
   const selectCatText = LANG_DATA[SELECT_CAT][nativeLanguage];
   const seenPhraseText = LANG_DATA[SEEN_PHRASES][nativeLanguage];
@@ -90,55 +93,81 @@ export default ({
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        <View style={{paddingHorizontal: 35, paddingVertical: 23}}>
-          <View style={styles.header}>
+        <View style={getStyle(CONTAINER_STYLE, themeMode)}>
+          <View style={getStyle(HEADER_STYLE, themeMode)}>
             <ToolBar
+              themeMode={themeMode}
               button={
                 <ToolButton
                   onPress={() => {
                     navigation.navigate('NewTerm');
+                    themeMode = {themeMode};
                   }}>
-                  <AddIcon width={24} height={24} fill="#FFFFFF" />
+                  <AddIcon
+                    width={24}
+                    height={24}
+                    fill={getFillColor(themeMode)}
+                  />
                 </ToolButton>
               }
             />
             <ToolBar
+              themeMode={themeMode}
               button={
                 <LanguageSwitcher
                   firstLanguage={LANGUAGE_NAMES.EN}
                   LeftText={leftText}
                   RightText={rightText}
-                  color="#FFFFFF"
+                  color={getFillColor(themeMode)}
+                  iconType=""
                   iconName="swap-horiz"
                   onPress={toggleLanguageName}
                   iconSize={24}
+                  themeMode={themeMode}
                 />
               }
             />
             <ToolBar
+              themeMode={themeMode}
               button={
-                <ToolButton onPress={openSeenPhrases}>
-                  <CheckIcon width={24} height={24} fill="#FFFFFF" />
+                <ToolButton themeMode={themeMode} onPress={openSeenPhrases}>
+                  <CheckIcon
+                    width={24}
+                    height={24}
+                    fill={getFillColor(themeMode)}
+                  />
                 </ToolButton>
               }
             />
             <ToolBar
+              themeMode={themeMode}
               button={
-                <ToolButton onPress={openCategoryLearntPhrases}>
-                  <CheckAllIcon width={24} height={24} fill="#FFFFFF" />
+                <ToolButton
+                  themeMode={themeMode}
+                  onPress={openCategoryLearntPhrases}>
+                  <CheckAllIcon
+                    width={24}
+                    height={24}
+                    fill={getFillColor(themeMode)}
+                  />
                 </ToolButton>
               }
             />
             <ToolBar
+              themeMode={themeMode}
               button={
-                <ToolButton onPress={() => null}>
-                  <ModeIcon width={24} height={24} fill="#FFFFFF" />
+                <ToolButton themeMode={themeMode} onPress={setThemeMode}>
+                  <ModeIcon
+                    width={24}
+                    height={24}
+                    fill={getFillColor(themeMode)}
+                  />
                 </ToolButton>
               }
             />
           </View>
-          <View style={styles.heading}>
-            <SectionHeading text={selectCatText} />
+          <View style={getStyle(HEADING_STYLE, themeMode)}>
+            <SectionHeading themeMode={themeMode} text={selectCatText} />
           </View>
           <List
             lang={nativeLanguage}
@@ -148,9 +177,13 @@ export default ({
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openCategoryPhrases}
+            themeMode={themeMode}
           />
-          <View style={styles.heading}>
-            <SectionHeading text={`${seenPhraseText}: `} />
+          <View style={getStyle(HEADING_STYLE, themeMode)}>
+            <SectionHeading
+              themeMode={themeMode}
+              text={`${seenPhraseText}: `}
+            />
           </View>
           <List
             data={[
@@ -166,9 +199,13 @@ export default ({
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openSeenPhrases}
+            themeMode={themeMode}
           />
-          <View style={styles.heading}>
-            <SectionHeading text={`${learntPhraseText}: `} />
+          <View style={getStyle(HEADING_STYLE, themeMode)}>
+            <SectionHeading
+              themeMode={themeMode}
+              text={`${learntPhraseText}: `}
+            />
           </View>
           <List
             data={[
@@ -184,19 +221,10 @@ export default ({
             iconType="material-community"
             iconName="arrow-right"
             makeAction={openCategoryLearntPhrases}
+            themeMode={themeMode}
           />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    paddingBottom: 56,
-  },
-  heading: {
-    paddingBottom: 15,
-  },
-});

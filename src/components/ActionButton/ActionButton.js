@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import {TouchableHighlight, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
+import {
+  getStyle,
+  ACTION_BUTTON_CONTAINER,
+  BUTTON_STYLE,
+  BUTTON_TEXT,
+} from '../../themeMode';
 
 export default function ActionButton({
   onPress,
@@ -9,14 +15,17 @@ export default function ActionButton({
   color,
   iconType,
   iconName,
+  themeMode,
 }) {
   return (
     <TouchableHighlight
-      style={styles.container}
+      style={getStyle(ACTION_BUTTON_CONTAINER, themeMode)}
       underlayColor="transparent"
       onRowPress={onPress}>
-      <View style={styles.button}>
-        <Text style={(styles.text, {color: color})}>{text}</Text>
+      <View style={getStyle(BUTTON_STYLE, themeMode)}>
+        <Text style={(getStyle(BUTTON_TEXT, themeMode), {color: color})}>
+          {text}
+        </Text>
         <Icon
           style={{marginLeft: 10}}
           name={iconName}
@@ -35,30 +44,3 @@ ActionButton.defaultProps = {
 ActionButton.propTypes = {
   onPress: PropTypes.func,
 };
-
-const styles = StyleSheet.create({
-  container: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: 16,
-    color: '#FFFFFF',
-    alignSelf: 'center',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    textAlignVertical: 'center',
-  },
-  text: {
-    color: '#06B6D4',
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: 16,
-    lineHeight: 19,
-  },
-});

@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TouchableHighlight, StyleSheet, Text, View} from 'react-native';
+import {TouchableHighlight, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
+import {
+  getStyle,
+  LANGUAGE_SWITCHER_CONTAINER_STYLE,
+  BUTTON_STYLE,
+  BUTTON_TEXT,
+} from '../../themeMode';
 
 export default function LanguageSwitcher({
   onPress,
@@ -12,14 +18,15 @@ export default function LanguageSwitcher({
   RightText,
   iconSize,
   firstLanguage,
+  themeMode,
 }) {
   return (
     <TouchableHighlight
-      style={styles.container}
+      style={getStyle(LANGUAGE_SWITCHER_CONTAINER_STYLE, themeMode)}
       underlayColor={firstLanguage ? '#001F7E' : '#007E3A'}
       onPress={onPress}>
-      <View style={styles.button}>
-        <Text style={(styles.text, {color: color})}>
+      <View style={getStyle(BUTTON_STYLE, themeMode)}>
+        <Text style={(getStyle(BUTTON_TEXT, themeMode), {color: color})}>
           {firstLanguage ? RightText : LeftText}
         </Text>
         <Icon
@@ -29,7 +36,7 @@ export default function LanguageSwitcher({
           type={iconType}
           size={iconSize}
         />
-        <Text style={(styles.text, {color: color})}>
+        <Text style={(getStyle(BUTTON_TEXT, themeMode), {color: color})}>
           {firstLanguage ? LeftText : RightText}
         </Text>
       </View>
@@ -44,27 +51,3 @@ LanguageSwitcher.defaultProps = {
 LanguageSwitcher.propTypes = {
   onPress: PropTypes.func,
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-    backgroundColor: '#06B6D4',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 11,
-    borderRadius: 30,
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    textAlignVertical: 'center',
-  },
-  text: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: 13,
-    lineHeight: 16,
-  },
-});

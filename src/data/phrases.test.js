@@ -148,8 +148,6 @@ describe('findCategoryById', () => {
   it('returns null if no category found', () => {
     const received = findCategoryById('###writing-a-will###');
     const expected = null;
-
-    console.log(received);
     expect(received).toEqual(null);
   });
 });
@@ -158,7 +156,6 @@ describe('findPhraseById', () => {
   it('finds phrase by id', () => {
     const received = findPhraseById('###writing-letter###');
     const expected = {};
-    console.log(received);
     expect(received).toEqual(expected);
   });
   it('returns null if no phrase found', () => {

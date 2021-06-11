@@ -10,6 +10,7 @@ import {
   SET_PHRASES_LEFT,
   SET_SEEN_PHRASES_CATEGORY,
   TOOGLE_LANGUAGE_NAME,
+  SET_THEME_MODE,
 } from '../constants';
 
 import {getAllCategories as getAllLocalCategories} from '../../data/dataUtils';
@@ -150,5 +151,12 @@ export function setSeenPhraseCategory(category) {
 export function toggleLanguageName() {
   return {
     type: TOOGLE_LANGUAGE_NAME,
+  };
+}
+
+export function setThemeMode(theme) {
+  return {
+    type: SET_THEME_MODE,
+    payload: theme,
   };
 }
