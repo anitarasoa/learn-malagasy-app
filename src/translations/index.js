@@ -21,6 +21,9 @@ export const SEEN_CAT_NAME = 'SEEN_CAT_NAME';
 export const PHRASE_ENGLISH = 'PHRASE_ENGLISH';
 export const PHRASE_MALAGASY = 'PHRASE_MALAGASY';
 export const ADD = 'ADD';
+export const CORRECT = 'CORRECT';
+export const WRONG = 'WRONG';
+export const NO_PHRASES = 'NO_PHRASES';
 
 export const LANG_DATA = {
   [SELECT_CAT]: {
@@ -104,5 +107,17 @@ export const LANG_DATA = {
   [ADD]: {
     [LANGUAGE_NAMES.EN]: 'Add',
     [LANGUAGE_NAMES.MG]: 'Hametraka',
+  },
+  [CORRECT]: {
+    [LANGUAGE_NAMES.EN]: 'Correct',
+    [LANGUAGE_NAMES.MG]: 'Marina',
+  },
+  [WRONG]: {
+    [LANGUAGE_NAMES.EN]: 'Wrong',
+    [LANGUAGE_NAMES.MG]: 'Diso',
+  },
+  [NO_PHRASES]: {
+    [LANGUAGE_NAMES.EN]: 'No',
+    [LANGUAGE_NAMES.MG]: 'Tsy misy',
   },
 };

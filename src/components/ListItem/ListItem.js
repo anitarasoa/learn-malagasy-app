@@ -8,6 +8,8 @@ import {
   StyleSheet,
   SectionList,
 } from 'react-native';
+import {CORRECT, LANG_DATA, WRONG} from '../../translations';
+import {useSelector} from 'react-redux';
 
 export const Separator = () => <View style={styles.separator} />;
 const RenderDataItem = ({
@@ -29,11 +31,15 @@ const RenderDataItem = ({
   const shouldReveal = isSelected || showAsCorrect;
   const shouldDisplayAnswer = showAnswerMode && shouldReveal;
 
+  const nativeLanguage = useSelector(state => state.nativeLanguage);
+  const correctText = LANG_DATA[CORRECT][nativeLanguage];
+  const wrongText = LANG_DATA[WRONG][nativeLanguage];
+
   const textToDisplay = !shouldDisplayAnswer
     ? text
     : showAsCorrect
-    ? 'Correct'
-    : 'Wrong';
+    ? `${correctText}`
+    : `${wrongText}`;
 
   const colorToDisplay = !shouldDisplayAnswer
     ? color
