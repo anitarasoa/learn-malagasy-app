@@ -9,6 +9,7 @@ import {
   LEFT_TEXT,
   RIGHT_TEXT,
   WORDS_PHRASES,
+  NO_PHRASES,
 } from '../translations/index';
 import {View, SafeAreaView, KeyboardAvoidingView} from 'react-native';
 
@@ -53,6 +54,7 @@ export default ({
   const leftText = LANG_DATA[LEFT_TEXT][nativeLanguage];
   const rightText = LANG_DATA[RIGHT_TEXT][nativeLanguage];
   const wordsAndPhrases = LANG_DATA[WORDS_PHRASES][nativeLanguage];
+  const noPhrasesText = LANG_DATA[NO_PHRASES][nativeLanguage];
 
   useEffect(() => {
     // handle the storing new phrases
@@ -190,7 +192,9 @@ export default ({
               {
                 id: `${SEEN_PHRASES_ID}`,
                 name: `${
-                  seenPhrases.length === 0 ? 'No' : `${seenPhrases.length}`
+                  seenPhrases.length === 0
+                    ? `${noPhrasesText}`
+                    : `${seenPhrases.length}`
                 } ${wordsAndPhrases}`,
               },
             ]}
@@ -212,7 +216,9 @@ export default ({
               {
                 id: LEARNT_PRHASES_ID,
                 name: `${
-                  learntPhrases.length ? learntPhrases.length : 'No'
+                  learntPhrases.length
+                    ? learntPhrases.length
+                    : `${noPhrasesText}`
                 } ${wordsAndPhrases}`,
               },
             ]}

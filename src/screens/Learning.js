@@ -28,6 +28,8 @@ import {
   LEARNT_CAT_NAME,
   SEEN_CAT_NAME,
   SEEN_PHRASES,
+  CORRECT,
+  WRONG,
 } from '../translations/index';
 
 import {getPhrasesForCategoryId, LANGUAGE_NAMES} from '../data/dataUtils';
@@ -128,16 +130,14 @@ export default ({
     const phraseCategoryId = categories.find(cat =>
       cat.phrasesIds.includes(current?.id),
     );
-    // Get all the phrases based on the current category
     const allAppendixPhrases = getPhrasesForCategoryId(phraseCategoryId?.id);
-    const appendixPhrase = shuffleArray(allAppendixPhrases).slice(0, 3);
-    const randomFromAll = shuffleArray(originWithoutCurrent).slice(0, 3);
-    let randomWithCorrect = shuffleArray([...randomFromAll, current]);
-    // Check if it is seen or learnt phrases, then change randomFromAll into appendixPhrase
-    if (seenPhrases || learntPhrases) {
-      appendixPhrase.every(phrase => phrase.id !== current.id);
-      randomWithCorrect = shuffleArray([...appendixPhrase, current]);
-    }
+    const removeDuplicateItem = allAppendixPhrases.filter(
+      phr => phr.id !== current.id,
+    );
+    const randomFromAll = shuffleArray(
+      seenPhrases || learntPhrases ? removeDuplicateItem : originWithoutCurrent,
+    ).slice(0, 3);
+    const randomWithCorrect = shuffleArray([...randomFromAll, current]);
     setAnswerOptions(randomWithCorrect);
   };
 
