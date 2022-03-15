@@ -1,5 +1,7 @@
 # Learn-gasy - mobile application that helps users to learn Malagasy or English
 
+![learn-malagasy-light](https://user-images.githubusercontent.com/60210180/145386506-a64eb5e7-e8da-4127-8d45-4fc9a92b409a.png)
+
 ## Features:
    - Around 1000 phrases divided into 42 categories.
    - Two operating modes where you can set Malagasy or English as primary language.
